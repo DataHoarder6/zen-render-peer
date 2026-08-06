@@ -13,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Render deploy hook
-        run: curl -fsS -o /dev/null -w "render deploy hook: HTTP %{http_code}\n" -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
