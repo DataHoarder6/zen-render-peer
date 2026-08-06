@@ -13,14 +13,14 @@
 #      (curl every ~5 min) prevents Render's 15-min idle spin-down.
 #
 # The private SSH key is injected at runtime via the RENDER_SSH_KEY env secret.
+FROM alpine:3.20 AS builder
+RUN apk add --no-cache build-base git
+RUN git clone -q --depth 1 https://github.com/rofl0r/microsocks.git /tmp/microsocks \
+ && make -C /tmp/microsocks
+
 FROM alpine:3.20
-
-RUN apk add --no-cache \
-      autossh \
-      microsocks \
-      openssh-client \
-      busybox
-
+RUN apk add --no-cache autossh openssh-client busybox
+COPY --from=builder /tmp/microsocks/microsocks /usr/local/bin/microsocks
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 0755 /entrypoint.sh
 
