@@ -19,7 +19,7 @@ RUN git clone -q --depth 1 https://github.com/rofl0r/microsocks.git /tmp/microso
  && make -C /tmp/microsocks
 
 FROM alpine:3.20
-RUN apk add --no-cache autossh openssh-client busybox
+RUN apk add --no-cache autossh openssh-client python3
 COPY --from=builder /tmp/microsocks/microsocks /usr/local/bin/microsocks
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 0755 /entrypoint.sh

@@ -10,10 +10,10 @@ set -e
 PORT="${PORT:-10000}"
 
 # 1) Tiny HTTP health server so Render + the homelab keep-alive curl see an
-#    up service. busybox httpd is built into alpine's busybox.
+#    up service.
 mkdir -p /var/www
 printf 'ok\n' > /var/www/health
-busybox httpd -f -h /var/www -p "${PORT}" &
+python3 -m http.server "${PORT}" --bind 0.0.0.0 --directory /var/www &
 HTTPD_PID=$!
 
 # 2) SOCKS5 listener, container-local only. Homelab reaches it through the
