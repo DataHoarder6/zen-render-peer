@@ -1,0 +1,16 @@
+name: Deploy to Render
+
+# Auto-deploy the zen-render-peer web service on every push to main by calling
+# Render's deploy hook (a per-service secret URL). The hook URL lives in the
+# RENDER_DEPLOY_HOOK Actions secret so it is not exposed in this public repo.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render deploy hook
+        run: curl -fsS -o /dev/null -w "render deploy hook: HTTP %{http_code}\n" -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
